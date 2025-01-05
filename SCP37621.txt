@@ -1,0 +1,12 @@
+SCP37621_1	http://ftp.idrblab.cn/scprdb/SCP37621/proteinGroups_0_1_u37cell.txt
+SCP37621_2	http://ftp.idrblab.cn/scprdb/SCP37621/uniprot-human-filtered-reviewed_yes.fasta
+SCP37621_3	http://ftp.idrblab.cn/scprdb/SCP37621/0cell191115_2.raw
+SCP37621_4	http://ftp.idrblab.cn/scprdb/SCP37621/0cell191115_3.raw
+SCP37621_5	http://ftp.idrblab.cn/scprdb/SCP37621/0cell191115_5.raw
+SCP37621_6	http://ftp.idrblab.cn/scprdb/SCP37621/1cell191201_1.raw
+SCP37621_7	http://ftp.idrblab.cn/scprdb/SCP37621/1cell191201_2.raw
+SCP37621_8	http://ftp.idrblab.cn/scprdb/SCP37621/1cell191201_3.raw
+SCP37621_9	http://ftp.idrblab.cn/scprdb/SCP37621/5cell191115_1.raw
+SCP37621_10	http://ftp.idrblab.cn/scprdb/SCP37621/5cell191115_2.raw
+SCP37621_11	http://ftp.idrblab.cn/scprdb/SCP37621/5cell191115_3.raw
+SCP37621_12	http://ftp.idrblab.cn/scprdb/SCP37621/SCP37621_relevent_data.zip
