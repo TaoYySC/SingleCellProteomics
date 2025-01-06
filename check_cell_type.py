@@ -19,7 +19,10 @@ def get_cell_type(SCP, path):
         print(f"cells: {cells}")
         rows.append(cells)
     df = pd.DataFrame(rows, columns=headers)
-    file_path = os.path.join(path,f'{SCP}','cell_info.csv')
+    folder_path = os.path.join(path,f'{SCP}')
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    file_path = os.path.join(folder_path,'cell_info.csv')
     df.to_csv(file_path, index=False)
 
 if __name__ == '__main__':
