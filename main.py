@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlsplit
 import re
-
+import subprocess
 def get_next_page_url(soup):
     # Find the 'Next' page link by identifying the 'pager__item--next' class
     next_page_item = soup.find('li', class_='pager__item--next')
@@ -35,7 +35,7 @@ def get_SCP_id(url,tissue, project_ids_dict, study_type):
             next_page_url = f"https://singpro.idrblab.net/search/result/ms-by-list{next_page_url}"
         elif study_type == "FC":
             next_page_url = f"https://singpro.idrblab.net/search/result/ab-by-list{next_page_url}"
-        get_SCP_id(next_page_url, tissue, project_ids_dict)
+        get_SCP_id(next_page_url, tissue, project_ids_dict, study_type)
 
 def get_tissues(url, study_type):
     response = requests.get(url)
@@ -76,19 +76,23 @@ def sava_project_id(tissue, project_ids, study_type):
 def download_data(tissue, project_ids,study_type):
     for project_id in project_ids:
         project_id_path = os.path.join(f"{study_type}-based-SCP", tissue, f"{project_id}.txt")
-        with open(project_id_path, 'r') as file:
-            first_line = file.readline().strip()
-            file_name, file_url = first_line.split('\t')
-        response = requests.get(file_url)
 
-        project_id_folder_path = os.path.join(f"{study_type}-based-SCP", tissue, project_id)
-        if not os.path.exists(project_id_folder_path):
-            os.makedirs(project_id_folder_path)
-        data_name = os.path.basename(urlsplit(file_url).path)
-        file_name = os.path.join(project_id_folder_path, data_name)
-        if response.status_code == 200:
-            with open(file_name, 'wb') as f:
-                f.write(response.content)
+
+        with open(project_id_path, 'r') as file:
+            for line in file:
+                line = line.strip()
+                if 'raw' not in line.lower() and 'fasta' not in line.lower() and 'zip' not in line:
+                    file_name, file_url = line.split('\t')
+                    project_id_folder_path = os.path.join(f"{study_type}-based-SCP", tissue, project_id)
+                    if not os.path.exists(project_id_folder_path):
+                        os.makedirs(project_id_folder_path)
+                    try:
+                        subprocess.run(['wget', '-P', project_id_folder_path, file_url], check=True)
+                    except subprocess.CalledProcessError as e:
+                        error_message = f"Error downloading {file_url}:{e}\n"
+                        error_log_path = os.path.join(project_id_folder_path, 'error_log.txt')
+                        with open(error_log_path ,'a') as error_log:
+                            error_log.write(error_message)
 
 def MS_download(url):
     study_type = "MS"
@@ -100,7 +104,6 @@ def MS_download(url):
         print(project_ids_dict[tissue])
         sava_project_id(tissue, project_ids_dict[tissue],study_type)
         download_data(tissue, project_ids_dict[tissue],study_type)
-        break
     return
 def FC_download(url):
     study_type = "FC"
@@ -118,5 +121,6 @@ def FC_download(url):
 
 if __name__ == '__main__':
     main_url = f'https://singpro.idrblab.net/'
-    MS_download(main_url)
+    # MS_download(main_url)
+    FC_download(main_url)
 
