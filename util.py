@@ -87,7 +87,8 @@ def download_data(tissue, project_ids,study_type):
                     if not os.path.exists(project_id_folder_path):
                         os.makedirs(project_id_folder_path)
                     try:
-                        subprocess.run(['wget', '-P', project_id_folder_path, file_url], check=True)
+                        # subprocess.run(['D:\Software\Tools\wget\wget.exe', '-P', project_id_folder_path, file_url], check=True)
+                        subprocess.run(['wget', '-P', project_id_folder_path, file_url],check=True)
                     except subprocess.CalledProcessError as e:
                         error_message = f"Error downloading {file_url}:{e}\n"
                         error_log_path = os.path.join(project_id_folder_path, 'error_log.txt')
